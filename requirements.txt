@@ -1,3 +1,4 @@
 serpapi
 flask
 google-search-results
+anthropic
