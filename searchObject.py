@@ -1,44 +1,71 @@
 from serpapi import GoogleSearch
 import anthropic
 import os
+import requests
 
 os.environ["ANTHROPIC_API_KEY"] = "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"
 client_anthropic = anthropic.Anthropic()
 
-class searchObject:
-    def __init__(self) :
-        print('asdf')
+class SearchObject:
+    def __init__(self):
         self.params = None
-        self.search = None
-        self.linkList = None
+        self.results = None
+        self.link_list = []
 
-    def setParams(self, query) :
+    def set_params(self, query):
         self.params = {
-            "q": f"{query}",
+            "q": query,
             "api_key": "a2a1474b2e6ba99d36ae610c49bb60d13f3cc56025adf403882509320f517bcd"
         }
-    
-    def getParams(self) :
-        return self.params
-    
-    def search(self) :
-        self.search = GoogleSearch(self.params)
 
-        toParse = self.search["organic_results"]
+    def search(self):
+        search = GoogleSearch(self.params)
+        to_parse = search.get_dict().get("organic_results", [])
 
-        for idx, webInfo in enumerate(toParse):
-            self.linkList.append(webInfo["link"])
-    
-    def getSearch(self) :
-        return self.search
-    
-    def getLinkList(self) :
-        return self.linkList
-    
-    def analyze(self) :
-        #will do later :p
-    
+        self.link_list = [result.get("link") for result in to_parse if result.get("link")]
+
+    def get_link_list(self):
+        return self.link_list
+
+    def get_website_structure(self, url):
+        try:
+            headers = {"User-Agent": "Mozilla/5.0"}
+            response = requests.get(url, headers=headers, timeout=10)
+            response.raise_for_status()
+            return response.text[:5000]  
+        except Exception as e:
+            print(f"Failed to fetch {url}: {e}")
+            return None
+
+    def analyze_with_anthropic(self, html_content, prompt="Analyze the structure of this website content:"):
+        try:
+            message = client_anthropic.messages.create(
+                model="claude-3-opus-20240229",  
+                max_tokens=500,
+                temperature=0,
+                system="You're a web content analyst.",
+                messages=[
+                    {
+                        "role": "user",
+                        "content": f"{prompt}\n\n{html_content}"
+                    }
+                ]
+            )
+            return message.content[0].text
+        except Exception as e:
+            print(f"Anthropic error: {e}")
+            return None
 
 
+if __name__ == "__main__":
+    so = SearchObject()
+    so.set_params("coffee") 
+    so.search()
 
-
+    links = so.get_link_list()
+    for link in links:
+        print(f"Fetching and analyzing: {link}")
+        html = so.get_website_structure(link)
+        if html:
+            result = so.analyze_with_anthropic(html)
+            print(f"Analysis result for {link}:\n{result}\n{'-'*80}")
