@@ -17,6 +17,10 @@ class SearchObject:
             "q": query,
             "api_key": "a2a1474b2e6ba99d36ae610c49bb60d13f3cc56025adf403882509320f517bcd"
         }
+
+        compiledInfo = self.compile_info()
+        
+
     
 
     def search(self):
@@ -57,18 +61,26 @@ class SearchObject:
             print(f"Anthropic error: {e}")
             return None
 
-
-if __name__ == "__main__":
-    so = SearchObject()
-    so.set_params("calculus") 
-    so.search()
-
-    links = so.get_link_list()
-    for link in links:
-        print(f"Fetching and analyzing: {link}")
-        html = so.get_website_structure(link)
-        if html:
-            result = so.analyze_with_anthropic(html)
-            result = result.split(',')
-            print(result)
-            print(link)
+    def compile_info(self): 
+        self.search()
+        links = self.get_link_list()
+        count = 0
+        compiledQuestions = []
+        
+        for link in links:
+            if(count > 4) :
+                break
+            print(f"Fetching and analyzing: {link}")
+            html = self.get_website_structure(link)
+            if html:
+                result = self.analyze_with_anthropic(html)
+                result = result.split(',')
+                compiledQuestions.append({
+                    "link": link,
+                    "questions": result
+                })
+            
+            count+=1
+        
+        return compiledQuestions
+    
