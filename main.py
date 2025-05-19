@@ -1,22 +1,24 @@
 from flask import Flask, render_template, send_file
 import subprocess
+import searchObject
 
+searcher = searchObject()
 
-# app = Flask(__name__)
+app = Flask(__name__)
 
-# @app.route('/')
-# def index():
-#     return render_template('calcSearch.html')
+@app.route('/')
+def index():
+    return render_template('calcSearch.html')
 
-# @app.route('/generate_sudoku')
-# def generate_sudoku():
-#     subprocess.run(['./sudokuAlgorithm.exe'], check=True)
-#     return ""
+@app.route('/generate_sudoku')
+def generate_sudoku():
+    subprocess.run(['./sudokuAlgorithm.exe'], check=True)
+    return ""
 
-# @app.route('/outfile.csv')
-# def get_csv():
-#     return send_file('outfile.csv', as_attachment=True)
+@app.route('/outfile.csv')
+def get_csv():
+    return send_file('outfile.csv', as_attachment=True)
 
-# if __name__ == '__main__':
-#     app.run(debug=True)
+if __name__ == '__main__':
+    app.run(debug=True)
     

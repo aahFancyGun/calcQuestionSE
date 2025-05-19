@@ -17,6 +17,7 @@ class SearchObject:
             "q": query,
             "api_key": "a2a1474b2e6ba99d36ae610c49bb60d13f3cc56025adf403882509320f517bcd"
         }
+    
 
     def search(self):
         search = GoogleSearch(self.params)
@@ -37,13 +38,13 @@ class SearchObject:
             print(f"Failed to fetch {url}: {e}")
             return None
 
-    def analyze_with_anthropic(self, html_content, prompt="Analyze the structure of this website content:"):
+    def analyze_with_anthropic(self, html_content, prompt="analyze websites to find interesting and challenging calculus questions. Return your answer in a list seperated by commas, do not include a number at the beginning of a list entry and do not create new lines between entries. Do not generate any additional dialgoue beyond the questions"):
         try:
             message = client_anthropic.messages.create(
                 model="claude-3-opus-20240229",  
                 max_tokens=500,
                 temperature=0,
-                system="You're a web content analyst.",
+                system="analyze websites to find interesting and challenging calculus questions. Return your answer in a list seperated by commas, do not include a number at the beginning of a list entry and do not create new lines between entries. Do not generate any additional dialgoue beyond the questions",
                 messages=[
                     {
                         "role": "user",
@@ -59,7 +60,7 @@ class SearchObject:
 
 if __name__ == "__main__":
     so = SearchObject()
-    so.set_params("coffee") 
+    so.set_params("calculus") 
     so.search()
 
     links = so.get_link_list()
@@ -68,4 +69,6 @@ if __name__ == "__main__":
         html = so.get_website_structure(link)
         if html:
             result = so.analyze_with_anthropic(html)
-            print(f"Analysis result for {link}:\n{result}\n{'-'*80}")
+            result = result.split(',')
+            print(result)
+            print(link)
