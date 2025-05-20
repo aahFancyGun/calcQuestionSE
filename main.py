@@ -1,8 +1,9 @@
-from flask import Flask, render_template, send_file
+from flask import Flask, render_template, send_file, request
 import subprocess
-import searchObject
+from searchObject import SearchObject  # import the class
 
-searcher = searchObject()
+searcher = SearchObject() 
+
 
 app = Flask(__name__)
 
@@ -10,15 +11,14 @@ app = Flask(__name__)
 def index():
     return render_template('calcSearch.html')
 
-@app.route('/generate_sudoku')
-def generate_sudoku():
-    subprocess.run(['./sudokuAlgorithm.exe'], check=True)
-    return ""
-
-@app.route('/outfile.csv')
-def get_csv():
-    return send_file('outfile.csv', as_attachment=True)
+@app.route('/exchange_data', methods=['POST']) 
+def exchange_data():
+    if(request.method == 'POST'):
+        query = request.form.get('query')
+        print(query, flush=True)
+        searcher.set_params(query)
+        results = searcher.compile_info()
+        return render_template('results.html', results=results)
 
 if __name__ == '__main__':
     app.run(debug=True)
-    

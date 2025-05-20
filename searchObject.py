@@ -13,13 +13,14 @@ class SearchObject:
         self.link_list = []
 
     def set_params(self, query):
+        print(query, flush=True)
         self.params = {
             "q": query,
             "api_key": "a2a1474b2e6ba99d36ae610c49bb60d13f3cc56025adf403882509320f517bcd"
         }
 
         compiledInfo = self.compile_info()
-        
+
 
     
 
@@ -68,7 +69,7 @@ class SearchObject:
         compiledQuestions = []
         
         for link in links:
-            if(count > 4) :
+            if(count > 2) :
                 break
             print(f"Fetching and analyzing: {link}")
             html = self.get_website_structure(link)
@@ -80,7 +81,7 @@ class SearchObject:
                     "questions": result
                 })
             
-            count+=1
+            count = count + 1
         
         return compiledQuestions
     
