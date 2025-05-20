@@ -34,10 +34,13 @@
     </form>
 
     <div id="loading">⏳ Please wait, compiling info...</div>
-
+    <img id="Image" src="../assets/FirstFramefr.png" alt="null" style="max-width: 100%;height: auto;z-index: 100;width: 100%;position:fixed;top:0;left:0;">
     <script>
         window.onload = function() {
         document.getElementById("loading").style.display = "none";
+        
+        document.getElementById("Image").src="../assets/Calcuintro.gif";
+        setTimeout(()=>{document.getElementById("Image").style.display="none";},5000-1000/4);
         };
 
         
