@@ -12,10 +12,19 @@
         </div>
     </nav>
     <h1>Search Results</h1>
-    <ul>
-        {% for item in results %}
-            <li>{{ item }}</li>
-        {% endfor %}
-    </ul>
+    {% for section in results %}
+        <div class="card mb-3">
+            <div class="card-header">
+                <a href="{{ section.link }}" target="_blank">{{ section.link }}</a>
+            </div>
+            <div class="card-body">
+                <ul>
+                    {% for question in section.questions %}
+                        <li>{{ question }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    {% endfor %}
 </body>
 </html>

@@ -43,13 +43,13 @@ class SearchObject:
             print(f"Failed to fetch {url}: {e}")
             return None
 
-    def analyze_with_anthropic(self, html_content, prompt="analyze websites to find interesting and challenging calculus questions. Return your answer in a list seperated by commas, do not include a number at the beginning of a list entry and do not create new lines between entries. Do not generate any additional dialgoue beyond the questions"):
+    def analyze_with_anthropic(self, html_content, prompt="analyze websites to find interesting and challenging calculus questions. Return your answer in a list seperated by '&', do not include a number at the beginning of a list entry and do not create new lines between entries. Do not generate any additional dialgoue beyond the questions"):
         try:
             message = client_anthropic.messages.create(
                 model="claude-3-opus-20240229",  
                 max_tokens=500,
                 temperature=0,
-                system="analyze websites to find interesting and challenging calculus questions. Return your answer in a list seperated by commas, do not include a number at the beginning of a list entry and do not create new lines between entries. Do not generate any additional dialgoue beyond the questions",
+                system="analyze websites to find interesting and challenging calculus questions. Return your answer in a list seperated by '&', do not include a number at the beginning of a list entry and do not create new lines between entries. Do not generate any additional dialgoue beyond the questions",
                 messages=[
                     {
                         "role": "user",
@@ -69,19 +69,20 @@ class SearchObject:
         compiledQuestions = []
         
         for link in links:
-            if(count > 2) :
+            if(count > 3):
                 break
             print(f"Fetching and analyzing: {link}")
             html = self.get_website_structure(link)
             if html:
                 result = self.analyze_with_anthropic(html)
-                result = result.split(',')
+                result = result.split('&')
+                print(result)
                 compiledQuestions.append({
                     "link": link,
                     "questions": result
                 })
-            
+
             count = count + 1
-        
+                    
         return compiledQuestions
     
