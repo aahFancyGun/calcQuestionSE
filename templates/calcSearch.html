@@ -3,20 +3,9 @@
 <head>
     <title>CalcuSearch</title>
     <link rel="stylesheet" type="text/css" href="../CSS/styles.css">
-    <script src="../scripts/script.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='CSS/styles.css') }}">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
-    <style>
-        #loading {
-            display: none;
-            position: fixed;
-            top: 40%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 1.5em;
-            color: #333;
-        }
-    </style>
 </head>
 <body class="bg-light">
 
@@ -36,12 +25,12 @@
     <div id="loading">⏳ Please wait, compiling info...</div>
 
     <img id="Image" src="{{ url_for('static', filename='assets/FirstFramefr.png') }}"
-        alt="intro" style="width: 100%; height: auto; z-index: 100; width: 100%; position: fixed; top: 0; left: 0; background-color: #333;">
+        alt="intro">
 
     <script>
         window.onload = function() {
         document.getElementById("loading").style.display = "none";
-        
+
             const gifPath = "{{ url_for('static', filename='assets/Calcuintro.gif') }}";
             document.getElementById("Image").src = gifPath + "?" + new Date().getTime();
 

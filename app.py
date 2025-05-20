@@ -1,6 +1,6 @@
 from flask import Flask, render_template, send_file, request
 import subprocess
-from searchObject import SearchObject  # import the class
+from searchObject import SearchObject 
 
 searcher = SearchObject() 
 
