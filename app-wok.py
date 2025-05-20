@@ -19,6 +19,10 @@ def exchange_data():
         searcher.set_params(query)
         results = searcher.compile_info()
         return render_template('results.html', results=results)
+    
+@app.route('/view_results')
+def view_result():
+    return render_template('results.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
