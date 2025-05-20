@@ -34,16 +34,22 @@
     </form>
 
     <div id="loading">⏳ Please wait, compiling info...</div>
-    <img id="Image" src="../assets/FirstFramefr.png" alt="null" style="max-width: 100%;height: auto;z-index: 100;width: 100%;position:fixed;top:0;left:0;">
+
+    <img id="Image" src="{{ url_for('static', filename='assets/FirstFramefr.png') }}"
+        alt="intro" style="width: 100%; height: auto; z-index: 100; width: 100%; position: fixed; top: 0; left: 0; background-color: #333;">
+
     <script>
         window.onload = function() {
         document.getElementById("loading").style.display = "none";
         
-        document.getElementById("Image").src="../assets/Calcuintro.gif";
-        setTimeout(()=>{document.getElementById("Image").style.display="none";},5000-1000/4);
+            const gifPath = "{{ url_for('static', filename='assets/Calcuintro.gif') }}";
+            document.getElementById("Image").src = gifPath + "?" + new Date().getTime();
+
+            setTimeout(() => {
+                document.getElementById("Image").style.display = "none";
+            }, 4800); 
         };
 
-        
         function showLoading() {
             document.getElementById("loading").style.display = "block";
         }
