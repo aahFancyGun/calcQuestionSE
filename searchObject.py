@@ -2,24 +2,52 @@ from serpapi import GoogleSearch
 import anthropic
 import os
 import requests
+import json
+
 
 os.environ["ANTHROPIC_API_KEY"] = "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"
 client_anthropic = anthropic.Anthropic()
 
 class SearchObject:
+    toadd = {}
+    thisthing={}
+    found = 0
+    betterdata = {}
+    
     def __init__(self):
         self.params = None
         self.results = None
         self.link_list = []
 
     def set_params(self, query):
+        global toadd
+        global thisthing
+        global found
+        global betterdata
         print(query, flush=True)
         self.params = {
             "q": query,
             "api_key": "a2a1474b2e6ba99d36ae610c49bb60d13f3cc56025adf403882509320f517bcd"
         }
+        found = 0
+        if os.path.exists('temporary.txt'):
+            with open('temporary.txt','r') as f:
+                datawhatever = f.read()
+            betterdata = json.loads(datawhatever)
+            for key in betterdata.keys():
+                if(key==query & found==0):
+                    compiledInfo=betterdata[key]
+                    
+                    thisthing = betterdata[key]
+                    found = 1
+        else:
+            
+            compiledInfo = self.compile_info()
+            found=1
+        if(found==0):  
+            compiledInfo = self.compile_info()
+        
 
-        compiledInfo = self.compile_info()
 
 
     
@@ -63,31 +91,43 @@ class SearchObject:
             return None
 
     def compile_info(self): 
+        global toadd
+        global found
+        global betterdata
+        global thisthing
+        if(found==1):
+            return thisthing
+        
         self.search()
         links = self.get_link_list()
         count = 0
         compiledQuestions = []
-        
+        jsonquestions = {}
         for link in links:
             if(count > 3):
                 break
             print(f"Fetching and analyzing: {link}")
             html = self.get_website_structure(link)
             print(html)
-            
+            jsonquestions[count] = {}
             if html:
                 result = self.analyze_with_anthropic(html)
                 if(result != None):
-
                     result = result.split('&')
                     print(result)
                     compiledQuestions.append({
                         "link": link,
                         "questions": result
-                    })
+                    }) #WAIT THATS LITERALLY ALMOST JSON FORMAT LOL
+                    jsonquestions[count]["link"]=link
+                    jsonquestions[count]["questions"]=result
                 # sorry guys, a lil fix here but we gotta get more credits
                 # oh yeah can one of you make a thing that else's the result and says HEY WE OUTTA CREDITS ty.
             count = count + 1
-                    
+        toadd = jsonquestions
+        betterdata[self.params["q"]]=toadd
+        with open("temporary.txt","w") as f:
+            jonsified = json.dumps(betterdata)
+            f.write(jonsified)
         return compiledQuestions
     

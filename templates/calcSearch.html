@@ -96,7 +96,14 @@
         function showLoading() {
             document.getElementById("loading").style.display = "block";
             document.getElementById("willblurlater").id= "nowblur";
-            
+            // sending data to python script now!
+            if(localStorage.getItem("data")>0){
+                const data = localStorage.getItem("data");
+                fetch('/view_results',{method: "POST",headers: {'content-type':'application/json'},body:data})
+                .then(response=>response.json())
+                .then(data=>console.log(data))
+                .catch(error=>console.error("Error:",error));
+            }
         }
     </script>
 </body>

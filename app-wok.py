@@ -1,7 +1,8 @@
 from flask import Flask, render_template, send_file, request
 import subprocess
 from searchObject import SearchObject 
-
+import json
+import os
 searcher = SearchObject() 
 
 
@@ -26,3 +27,10 @@ def view_result():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+@app.route('/exchange_data',methods=['POST'])
+def handle_data():
+    with open("temporary.txt",'w') as f:
+        data = request.get_data(as_text=true)
+        f.write(data)
+    
