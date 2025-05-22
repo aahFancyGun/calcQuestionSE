@@ -73,15 +73,20 @@ class SearchObject:
                 break
             print(f"Fetching and analyzing: {link}")
             html = self.get_website_structure(link)
+            print(html)
+            
             if html:
                 result = self.analyze_with_anthropic(html)
-                result = result.split('&')
-                print(result)
-                compiledQuestions.append({
-                    "link": link,
-                    "questions": result
-                })
+                if(result != None):
 
+                    result = result.split('&')
+                    print(result)
+                    compiledQuestions.append({
+                        "link": link,
+                        "questions": result
+                    })
+                # sorry guys, a lil fix here but we gotta get more credits
+                # oh yeah can one of you make a thing that else's the result and says HEY WE OUTTA CREDITS ty.
             count = count + 1
                     
         return compiledQuestions
