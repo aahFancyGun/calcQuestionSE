@@ -40,3 +40,6 @@
     text-decoration: underline;
     text-decoration-color: #EE015F;
 }
+#nowblur{
+    filter:blur(2px);
+}
