@@ -24,6 +24,3 @@ def exchange_data():
 @app.route('/view_results')
 def view_result():
     return render_template('results.html', results=results)
-
-if __name__ == '__main__':
-    app.run(debug=True)
