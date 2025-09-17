@@ -70,7 +70,7 @@ class SearchObject:
         compiledQuestions = []
         
         for link in links:
-            if(count > 3):
+            if(count > 1):
                 break
             print(f"Fetching and analyzing: {link}")
             html = self.get_website_structure(link)

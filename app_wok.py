@@ -23,7 +23,6 @@ def exchange_data():
     
 @app.route('/view_results')
 def view_result():
-    global results
     return render_template('results.html', results=results)
 
 if __name__ == '__main__':
