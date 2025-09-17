@@ -17,12 +17,14 @@ def exchange_data():
         query = request.form.get('query')
         print(query, flush=True)
         searcher.set_params(query)
+        global results
         results = searcher.compile_info()
         return render_template('results.html', results=results)
     
 @app.route('/view_results')
 def view_result():
-    return render_template('results.html')
+    global results
+    return render_template('results.html', results=results)
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -3,8 +3,9 @@ import anthropic
 import os
 import requests
 
-os.environ["ANTHROPIC_API_KEY"] = "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"
+os.environ["ANTHROPIC_API_KEY"] = "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"
 client_anthropic = anthropic.Anthropic()
+
 
 class SearchObject:
     def __init__(self):
@@ -43,10 +44,10 @@ class SearchObject:
             print(f"Failed to fetch {url}: {e}")
             return None
 
-    def analyze_with_anthropic(self, html_content, prompt="analyze websites to find interesting and challenging calculus questions. Return your answer in a list seperated by '&', do not include a number at the beginning of a list entry and do not create new lines between entries. Do not generate any additional dialgoue beyond the questions"):
+    def analyze_with_anthropic(self, html_content, prompt="analyze websites to find interesting and challenging calculus questions, only choose questions that go beyond a plug and chug level. Return your answer in a list seperated by '&', do not include a number at the beginning of a list entry and do not create new lines between entries. Do not generate any additional dialgoue beyond the questions"):
         try:
             message = client_anthropic.messages.create(
-                model="claude-3-opus-20240229",  
+                model="claude-3-7-sonnet-20250219",  
                 max_tokens=500,
                 temperature=0,
                 system="analyze websites to find interesting and challenging calculus questions. Return your answer in a list seperated by '&', do not include a number at the beginning of a list entry and do not create new lines between entries. Do not generate any additional dialgoue beyond the questions",
@@ -62,7 +63,7 @@ class SearchObject:
             print(f"Anthropic error: {e}")
             return None
 
-    def compile_info(self): 
+    def compile_info(self):
         self.search()
         links = self.get_link_list()
         count = 0
@@ -85,8 +86,7 @@ class SearchObject:
                         "link": link,
                         "questions": result
                     })
-                # sorry guys, a lil fix here but we gotta get more credits
-                # oh yeah can one of you make a thing that else's the result and says HEY WE OUTTA CREDITS ty.
+
             count = count + 1
                     
         return compiledQuestions
