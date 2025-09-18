@@ -3,8 +3,7 @@ import anthropic
 import os
 import requests
 
-os.environ["ANTHROPIC_API_KEY"] = "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"
-client_anthropic = anthropic.Anthropic()
+client_anthropic = anthropic.Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
 
 
 class SearchObject:
