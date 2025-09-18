@@ -67,7 +67,7 @@ class SearchObject:
         links = self.get_link_list()
         compiledQuestions = []
         
-        for link in links[:2]:
+        for link in links[:1]:
             print(f"Fetching and analyzing: {link}")
             html = self.get_website_structure(link)
             print(html)
