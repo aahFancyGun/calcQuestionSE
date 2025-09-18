@@ -65,12 +65,9 @@ class SearchObject:
     def compile_info(self):
         self.search()
         links = self.get_link_list()
-        count = 0
         compiledQuestions = []
         
-        for link in links:
-            if(count > 1):
-                break
+        for link in links[:1]:
             print(f"Fetching and analyzing: {link}")
             html = self.get_website_structure(link)
             print(html)
@@ -85,8 +82,6 @@ class SearchObject:
                         "link": link,
                         "questions": result
                     })
-
-            count = count + 1
                     
         return compiledQuestions
     
