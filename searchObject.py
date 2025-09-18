@@ -43,7 +43,7 @@ class SearchObject:
             print(f"Failed to fetch {url}: {e}")
             return None
 
-    def analyze_with_anthropic(self, html_content, prompt="analyze websites to find interesting and challenging calculus questions, only choose questions that go beyond a plug and chug level. Return your answer in a list seperated by '&', do not include a number at the beginning of a list entry and do not create new lines between entries. Do not generate any additional dialgoue beyond the questions"):
+    def analyze_with_anthropic(self, html_content, prompt="You are a calculus teacher assistant tasked with finding interesting and challenging calculus questions. If you encounter representations of symbols that aren't easily human readable, reword to english"):
         try:
             message = client_anthropic.messages.create(
                 model="claude-3-7-sonnet-20250219",  
