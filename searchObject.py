@@ -16,7 +16,7 @@ class SearchObject:
         print(query, flush=True)
         self.params = {
             "q": query,
-            "api_key": "a2a1474b2e6ba99d36ae610c49bb60d13f3cc56025adf403882509320f517bcd"
+            "api_key": os.environ.get("SERPAPI_KEY"),
         }
 
         compiledInfo = self.compile_info()
